@@ -1,0 +1,1 @@
+mysqldump -uroot -p12345 --add-locks=FALSE app_wisecitymbc > ~/app_wisecitymbc.sql

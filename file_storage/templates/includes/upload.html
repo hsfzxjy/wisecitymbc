@@ -1,0 +1,41 @@
+<template type="template" id="defaultUploadTemplate">
+    <div class="well well-sm well-file clearfix col-md-6 load-list-item">
+        <div class="pull-left width-60 overflow-ellipsis">
+            {name}
+        </div>
+        <div class="pull-right file-progress">
+            <span class="file-progress-value"></span>
+            <button class="btn btn-link file-cancel">取消</button>
+        </div>
+        <div class="pull-right hidden file-operation">
+            <button class="btn btn-link file-insert">点击插入</button>
+            <button class="btn btn-link file-delete text-danger">删除</button>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+require(['jquery', 'qiniu', 'uploadUtils'], function ($, Qiniu, FileUpload) {
+    var $button = $("#{{upload_button_id}}");
+    setTimeout(function () {
+        if (!$button.height()) {
+            setTimeout(arguments.callee, 1000);
+        } else {
+            var up = new FileUpload.Uploader('{{upload_container_selector}}', '{{hash}}');
+            uploader = Qiniu.uploader({
+                runtimes: 'html5,flash,html4',
+                browse_button: '{{upload_button_id}}',
+                uptoken_url: '/storage/uptoken/',
+                domain: 'http://7xkade.dl1.z0.glb.clouddn.com',
+                max_file_size: '50mb',
+                flash_swf_url: '/static/plupload/Moxie.swf',
+                max_retries: 3,
+                dragdrop: false,
+                chuck_size: '4mb',
+                auto_start: true,
+                init: up.init
+            });
+        }
+    }, 1000);
+});
+</script>

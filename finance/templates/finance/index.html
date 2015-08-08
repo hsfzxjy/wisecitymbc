@@ -1,0 +1,13 @@
+{% extends "finance/base.html" %}
+
+{% block main_content %}
+    {% for model_name, model in models.iteritems %}
+        <div class="panel">
+            <div class="panel-heading">
+                <h4>
+                    {{model.meta.verbose_name}}
+                </h4>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,91 @@
+{% load static %}
+{% spaceless %}
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html lang="zh-cn" class="no-js ie7"><![endif]-->
+<!--[if (gt IE 8)|!(IE)]><!--><html lang="zh-cn" class="no-js"><!--<![endif]-->
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge;IE=9">
+        <meta http-equiv="cache-control" content="no-cache">
+        <link rel="shortcut icon" href="/static/img/logo.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link type="text/css" href="//libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" defer async="true"/>
+        <script type="text/javascript">debug = {{DEBUG|lower}};</script>
+        <script type="text/javascript" src="/static/require.js"></script>
+        <script type="text/javascript" src="/static/entry.js"></script>
+        <link type="text/css" href="{% static 'css/main.css'%}" rel="stylesheet" defer async="true"/>
+        <link rel="stylesheet" type="text/css" href="//libs.baidu.com/fontawesome/4.0.3/css/font-awesome.min.css" defer async="true"/>
+        {%block extra_header%}{%endblock%}
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+            <script type="/static/build/ie-fix/console.js"></script>
+        <![endif]-->
+        <title>{%block title%}{%endblock%} - WiseCityMBC</title>
+        {% block show_unread %}
+        <script type="text/javascript">
+        require(['jquery', 'bootstrap'], function ($) {
+            $(function () {
+                function showUnread() {
+                    $('.badge-chat').html(unreadCount || '');
+                }
+
+                if (!window.channel) return;
+
+                var unreadCount = 0;
+
+                API.url('unread').get().ok(function (data) {
+                    for (var context in data) {
+                        unreadCount += data[context];
+                    }
+                    showUnread();
+                });
+
+                window.channel.events.on('channel.message', function (e, data) {
+                    if (data.sender.id === userid) return;
+                    unreadCount++;
+                    showUnread();
+                });
+            });
+        });
+        </script>
+        {% endblock %}
+        <script type="text/javascript">
+        require(['jquery', 'bootstrap'], function ($) {
+            hasLogined = {% if user.is_authenticated %} true {% else %} false {% endif %};
+            username = "{{user.nickname}}" , userid = "{{user.id}}";
+            $(function () {
+                console.log("%c假如你看到这段话，说明你也是编程爱好者。如果对网站的实现感兴趣，随时可以联系我。", "color:red;font-size:30px;");
+                {% block prevent_form %}
+                $("form").submit(function(e){e.preventDefault();});
+                {% endblock %}
+                $(".dropdown-toggle").dropdown();
+            });
+        });
+        </script>
+    </head>
+
+    <body>
+        {% block templates %}{% endblock %}
+        {% include "nav.html" %}
+        {% block body %}
+            {% include "ie-alarm.html" %}
+            {% block header %}{% endblock %}
+            <div id="mainContainer" class="container">
+                {% block container %}
+                    <div class="row">
+                        {% block inner_container %}
+                            <div id="mainContent" class="col-xs-12">
+                                {% block main_content %}{% endblock %}
+                            </div>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+            {% block footer %}
+                {% include "footer.html" %}
+            {% endblock %}
+        {% endblock %}
+    </body>
+</html>
+{% endspaceless %}

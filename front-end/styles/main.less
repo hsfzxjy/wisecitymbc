@@ -1,0 +1,799 @@
+@import (less) "./toastr.less";
+// Constants
+
+@gray: #272727;
+@black: #111111;
+@purple: #330031;
+@red: darken(red, 20%);
+@main-color: @black;
+@up-color: red;
+@down-color: green;
+@main-text-color: #666;
+@title-text-color: #A11122;
+@border-color: darken(@lightest-color, 50%);
+@lighter-color: #999999;
+@lightest-color: #ffffff;
+
+@min-xs: 480px;
+@max-xs: 767px;
+@min-sm: 768px;
+@max-sm: 991px;
+@min-md: 992px;
+@max-md: 1199px;
+@max-lg: 1200px;
+
+
+// Functionalities
+
+.display-block {
+    display: block;
+}
+
+.h () {
+    font-size: 32px;
+    position: relative;
+    text-align: center;
+    margin: 0;
+    color: @title-text-color;            
+}
+
+.border-bottom (@color, @width: 1px) {
+    border-bottom: @color @width solid;
+}
+
+.border (@color, @width: 1px) {
+    border: @color @width solid;
+}
+
+.text-indent (@indent: 2em) {
+    text-indent: @indent;
+}
+
+.no-border () {
+    border: none;
+}
+
+.no-border-radius () {
+    border-radius: 0;
+}
+
+.transparent () {
+    background-color: transparent;
+}
+
+.full-height () {
+    height: auto;
+    min-height: 100%;
+}
+
+.background (@color) {
+    background-color: @color;
+}
+
+.break-word () {
+    word-wrap: break-word;
+}
+
+.gradient-background (@start-color, @stop-color: @main-color) {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background: @start-color;
+    background: -moz-radial-gradient(center, ellipse cover,  @start-color 0%, @stop-color 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,@start-color), color-stop(100%,@stop-color));
+    background: -webkit-radial-gradient(center, ellipse cover,  @start-color 0%,@stop-color 100%);
+    background: -o-radial-gradient(center, ellipse cover,  @start-color 0%,@stop-color 100%);
+    background: -ms-radial-gradient(center, ellipse cover,  @start-color 0%,@stop-color 100%);
+    background: radial-gradient(ellipse at bottom,  @start-color 0%,@stop-color 70%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@{start-color}', endColorstr='@{stop-color}',GradientType=1 );
+
+}
+
+// Definitions
+
+.transparent-bk {
+    .transparent!important;
+}
+
+template {
+    display: none;
+}
+
+.navbar-brand img {
+    margin-top: -10px;
+}
+
+.ckeditor-body {
+    .transparent;
+}
+
+.price-up {
+    color: @up-color;
+}
+
+.price-down {
+    color: @down-color;
+}
+
+#top-scroll {
+
+    span {
+        &.key {
+            &:after {
+                content: ": ";
+            }
+        }
+
+        &.value {
+            color: @lighter-color;
+            padding-right: 10px;
+            max-width: 100%;
+        }
+    }
+}
+
+.display-none {
+    display: none;
+}
+
+.btn {
+    .no-border-radius();
+    .transparent();
+}
+
+.list-group {
+    list-style-type: none!important;
+}
+
+.list-group-header {
+    font-size: 30px;
+    margin-bottom: 10px;
+    .border-bottom(@title-text-color);
+}
+
+li.list-group-item {
+    .transparent();
+}
+
+a {
+    color: @lighter-color;
+    .transparent;
+
+    &:focus {
+        color: lighten(@lighter-color, 10%);
+    }
+
+    &:hover {
+        color: @lightest-color;
+        text-decoration: none;
+    }
+}
+
+body {
+    font-family: "Microsoft YaHei, Arial, sans-serif"!important;
+    color: @main-text-color;
+    .break-word;
+    .transparent;
+}
+
+html {
+    .full-height();
+    .gradient-background(fade(#241a39, 160%));
+    color: @main-text-color;
+
+    .alert-ie {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        .display-none;
+        .no-border-radius;
+    }
+
+    &.ie7 body {
+        padding-top: 50px!important;
+
+        .alert-ie {
+            display: block;
+        }
+    }
+}
+
+.jumbotron {
+    .gray-background;
+}
+
+.navbar {
+    .background(@black);
+    .no-border;
+
+    a {
+        .no-border;
+        .border-bottom(transparent);
+
+        &:hover {
+            .border-bottom(@title-text-color);
+        }
+    }
+
+    li {
+        &:active a {
+            .border-bottom(@title-text-color);
+            .transparent!important;
+        }
+
+        &.dropdown a:hover {
+            .no-border!important;
+        }
+    }
+}
+
+#top-nav a {
+    .no-border;
+
+    &:hover {
+        .no-border;
+    }
+}
+
+form .form-control {
+    .transparent;
+}
+
+form .form-control , textarea, select.form-control {
+    color: @lightest-color;
+
+    &.error {
+        .border(#a94442);
+    }
+}
+
+select {
+    option {
+        background-color: @gray!important;
+    }
+}
+
+textarea {
+    resize: none;
+    .transparent;
+}
+
+li.divider {
+    background-color: darken(@main-text-color, 30%)!important;
+}
+
+// Posts.
+
+.post {
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    .no-border-radius;
+    .transparent;
+
+    .post-h () {
+        margin: 0 0 45px;
+    }
+
+    h1, h2 {
+        .h;
+
+        &:hover {
+            color: lighten(@title-text-color, 10%);
+        }
+    }
+
+    .post-header {
+        font-size: 12px;
+        color: #777;
+        position: relative;
+
+        .post-title {
+            margin: 0;
+            .break-word;
+        }
+
+        h2 {
+            .post-h;
+        }
+
+        h1 {
+            .post-h;
+
+            &:after {
+                .border-bottom(#262626);
+                bottom: 0;
+                content: "";
+                left: 50%;
+                margin: 0 0 0 -30%;
+                position: absolute;
+                width: 60%;
+            }
+
+            a, span {
+                color: @title-text-color;
+                display: block;
+                padding: 65px 0 20px 0;
+                position: relative;
+                .break-word;
+            }
+
+            a {
+
+                .no-border;
+
+                &:hover {
+                    color: lighten(@title-text-color, 10%);
+                }
+
+                &:before {
+                    bottom: -4px;
+                    content: "";
+                    left: 50%;
+                    margin: 0 0 0 -27%;
+                    position: absolute;
+                    width: 60%
+                }
+
+                &:after {
+                    bottom: -3px;
+                    content: "";
+                    left: 50%;
+                    margin: 0 0 0 -28%;
+                    position: absolute;
+                    width: 60%
+                }
+
+                &:before, &:after {
+                    border-top: lighten(@border-color, 10%) solid 1px;
+                }
+            }
+        }
+    }
+
+    .post-content {
+        color: @main-text-color;
+        overflow-x: auto;
+        font-size: 16px;
+        line-height: 1.8;
+        padding: 20px 0;
+        .text-indent;
+
+        p, pre, ul, ol, dl, form, hr, table, blockquote {
+            margin-bottom: 1.8em;
+        }
+
+        li>p {
+            margin-bottom: 5px;
+        }
+
+        img, video, embed, iframe {
+            max-width: 100%;
+        }
+
+        img {
+            height: auto;
+        }
+    }
+
+    .post-meta {
+        color: @main-text-color;
+        border-top: @border-color 1px solid;
+        .transparent;
+
+        a, span {
+            color: @main-text-color;
+        }
+
+        a {
+            &:hover {
+                color: @lightest-color;
+            }
+
+            &:focus {
+                color: darken(@lightest-color, 10%)
+            }
+        }
+    }
+}
+
+.overflow-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.well-file {
+    margin-bottom: 10px!important;
+    overflow: hidden;
+}
+
+.width (@width) {
+    max-width: @width;
+}
+
+.width-50 {
+    .width(50%);
+}
+
+.width-60 {
+    .width(60%);
+}
+
+.width-80 {
+    .width(80%);
+}
+
+.width-100 {
+    .width(100%);
+}
+
+i.glyphicon {
+    margin: 0 5px;
+}
+
+.gray-background {
+    .background(@gray);
+}
+
+.comment {
+    margin: 20px 20px 0 20px;
+    .gray-background;
+    .no-border;
+    padding: 10px 20px;
+
+    .comment-content {
+        font-size: 16px;
+        line-height: 1.8;
+        padding-top: 0;
+        .break-word;
+        .text-indent;
+    }
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.badge-notice {
+    .background(@red);
+}
+
+.full-width {
+    .width-100!important;
+}
+
+#userHeader {
+    .no-border-radius;
+    margin-bottom: 0;
+
+    h1,h2,h3,small {
+        text-align: center;
+    }
+}
+
+ul.pager { 
+    li a {
+        background-color: @gray!important;
+        .border(@border-color)!important;
+    }
+}
+
+ul.dropdown-menu {
+    .background(darken(@gray, 10%))!important;
+    li a {
+        color: @main-text-color;
+
+        &:hover, &:focus {
+            .background(lighten(@gray, 15%))!important;
+        }
+    }
+}
+
+.data-section {
+    padding: 15px;
+    
+    h1 {
+        font-size: 14px;
+        text-align: center;
+        color: lighten(@main-text-color, 10%);
+    }
+
+    span {
+        font-size: 30px;
+        text-align: center;
+        display: block;
+    }
+}
+
+table {    
+
+    thead {
+        color: @lightest-color;
+    }
+
+    @darken-red: darken(@red, 25%);
+
+    tbody tr {
+
+        td {
+            .no-border!important;
+        }
+
+        &:hover {
+            td {
+                .background(lighten(@gray, 10%))!important;
+            }
+        }
+
+        &.danger {
+            td {
+                .background(@darken-red)!important;
+            }
+        }
+
+        &.danger:hover {
+            td {
+                .background(lighten(@darken-red, 10%))!important;
+            }
+        }
+    }
+
+    .panel {
+
+        .no-border;
+        .no-border-radius;
+
+        .panel-heading {
+            background: darken(@gray, 10%)!important;
+            .no-border;
+            .no-border-radius;
+        }
+
+        .panel-body {
+            background: darken(@gray, 5%);
+        }
+    }
+}
+
+ul.nav.nav-tabs {
+    .transparent;
+    .border-bottom(@border-color);
+
+    .header-border () {
+        .border-bottom(#eb7350, 3px)!important;
+    }
+
+    li {
+        .no-border;
+
+        &.active a {
+            .header-border;
+        }
+
+        a {
+            .border(transparent)!important;
+            .transparent!important;
+            .border-bottom(transparent, 3px);
+
+            &:hover {
+                .header-border;
+            }
+        }
+    }
+}
+
+ul.tag-display {
+    list-style-type: none;
+    padding: 0 5px 0 0;
+    margin: 0;
+    overflow: hidden;
+    .border(#eee);
+    cursor: text;
+    font: normal 14px sans-serif;
+    color: #555;
+    .background(#fff);
+
+    li {
+        display: block;
+        float: left;
+        overflow: hidden;
+        margin: 3px 0;
+        line-height: 1.5;
+    }
+
+
+    .tag-display-spacer {
+        padding: 0;
+        width: 8px;
+        overflow: hidden;
+        color: transparent;
+        background: none;
+    }
+
+    div {
+        float: left;
+        padding: 0 4px;
+    }
+
+    .tag-display-tag {
+        padding-left: 5px;
+        color: #46799b;
+        background: #e0eaf1;
+        white-space: nowrap;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 2px 0 0 2px;
+    }
+
+    button.close span {
+        background: #e0eaf1;
+        border-radius: 0 2px 2px 0;
+    }
+
+    .tag-display-delete {
+        background: #e0eaf1;
+        cursor: pointer;
+        padding-right: 5px;
+        border-radius: 0 2px 2px 0;
+
+        i {
+            display: inline-block;
+            line-height: 0.7;
+            width: 7px;
+            height: 7px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+
+            &:hover {
+                color: red;
+            }
+        }
+    }
+}
+
+.red-point{
+    position: absolute;
+    top: 5px;
+    right: 0px;
+    height: 18px;
+    min-width: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: @red;
+    text-align: center;
+    line-height: 17px;
+    color: white;
+    font-size: 11px;
+
+    &:empty {
+        .display-none;
+    }
+
+    &.red-point-left {
+        left: 0;
+        right: auto;
+    }
+}
+
+.no-padding {
+    padding: 0!important;
+}
+
+.no-width {
+    .width(0)!important;
+}
+
+@media (max-width: @max-sm) {
+    .mobile-hidden {
+        display: none!important;
+    }
+
+    .jumbotron .blog-title {
+        font-size: 40px !important;
+    }
+}
+
+@media (max-width: @min-xs) {
+    .jumbotron .blog-title {
+        font-size: 30px !important;
+    }
+}
+
+@media (min-width: @min-md) {
+    .not-mobile-hidden {
+        display: none!important;
+    }
+}
+
+.highcharts {
+    margin: 20px 0;
+    border: darken(@main-text-color, 15%) solid 1px;
+
+    .bk (@percent: 50%) {
+        .background(darken(@lighter-color, @percent));
+    }
+
+    .chart-loader {
+        width: 100%;
+        margin-bottom: 5px;
+        .no-border;
+        .bk;
+
+        .disabled {
+            .bk(40%);
+        }
+
+        &:hover, &:focus {
+            .bk;
+        }
+    }
+
+    .highcharts-loading {
+        .transparent!important;
+        color: @lighter-color;
+    }
+}
+
+.well {
+    .background(#2f2f2f);
+    .no-border;
+    .no-border-radius!important;
+}
+
+.empty-template {
+
+    .background(@gray);
+
+    h1, h2 {
+        .h;
+        margin-bottom: 0;
+    }
+
+    &:hover {
+        .background(lighten(@gray, 10%));
+    }
+}
+
+// CKEDITOR OVERWRITE
+
+.cke_reset, .cke_top, .cke_toolgroup {
+    background-color: transparent!important;
+}
+
+.cke_editor_body_text {
+    .no-border!important;
+    .no-padding!important;
+}
+
+// ANIMATIONS
+
+@import "animate/source/animated.less";
+@import "animate/source/bounceIn.less";
+@import "animate/source/fadeIn.less";
+
+.load-list-item {
+    .animated(1s); 
+    .bounceIn; 
+}
+
+.load-list-item-empty {
+    .animated(1s);
+    .fadeIn;
+}
+
+div.stock-description {
+    h1, h2 {
+        .display-none;
+    }
+
+    span {
+        font-size: 15px!important;
+        text-align: left;
+        text-indent: 2em;
+    }
+
+    border-bottom: darken(@main-text-color, 10%) dashed 1px;
+}

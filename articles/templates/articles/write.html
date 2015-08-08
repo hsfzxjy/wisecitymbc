@@ -1,0 +1,114 @@
+{%with upload_form_id="addUploaderForm"|add:write_form_id upload_container_id="addUploaderContainer"|add:write_form_id attachments=status_object.attachments.all upload_button_id=upload_form_id|add:"upload-button" %}
+<form class="form-horizontal" role="form" id="{{write_form_id}}">
+    <div class="form-group">
+        <div class="col-xs-12">
+            <input type="text" name="title" value="{{status_object.title}}" id="addFormTitle" placeholder="标题" class="form-control" data-toggle="popover" data-trigger="manual" data-container="#{{write_form_id}}" data-content="标题不为空！" data-placement="left">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-12">
+            <textarea class="form-control" placeholder="正文" name="body_text">{{status_object.body_text|safe}}</textarea>
+        </div>
+    </div>
+    <div class="hidden files-container">
+        {% for attachment in attachments %}
+        <input type='text' value='{{attachment.id}}' name='attachments'>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-success pull-left" id="{{upload_button_id}}">上传文件</button>
+            <input type="submit" class="btn btn-primary pull-right" value="发布">
+            <input type="button" class="btn btn-link pull-right btn-close" value="取消">
+            {% if user.category == user.ADMIN %}
+                <select class="form-control pull-right" style="width:auto;margin-right:10px;" name="status_type">
+                    <option value="govern">政府文章</option>
+                    <option value="media">媒体文章</option>
+                </select>
+            {% endif %}
+        </div>
+    </div>
+    {% if user.category == user.ADMIN %}
+        {% include "finance/includes/user_data_add.html" %}
+    {% endif %}
+</form>
+
+<div class="col-xs-12 no-padding" id="{{upload_container_id}}">
+    {%include "includes/upload.html" with upload_cdn=editor_cdn upload_container_selector="#"|add:upload_container_id upload_button_id=upload_button_id %}
+    {% for attachment in attachments %}
+    <div class="well well-sm well-file clearfix col-md-6" data-id="{{attachment.id}}" data-url="{{attachment.url}}" data-name="{{attachment.name}}">
+        <div class="pull-left width-60 overflow-ellipsis">
+            {{attachment.file_name}}
+        </div>
+        <div class="pull-right file-operation">
+            <button class="btn btn-link file-insert">点击插入</button>
+            <button class="btn btn-link file-delete text-danger">删除</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script type="text/javascript">
+require(['jquery', 'ckeditor', 'uploadUtils'], function ($, CKEDITOR, FileUpload) {
+    var statusId;
+    {% if status_object %}
+    statusId = {{status_object.id}};
+    {% endif %}
+
+    function callAPI(data) {
+        var api = API.url('statuses').bindElements($("input.btn", $form));
+
+        if (statusId) 
+            return api.url(statusId).patch(data);
+        else
+            return api.post(data);
+    }
+
+
+    var $form = $("#{{write_form_id}}"), 
+        $FilesDiv = $(".hidden.files-container", $form);
+        CKEDITOR.replace('body_text');
+    var editor = CKEDITOR.instances['body_text'];
+
+    FileUpload.events
+        .on("file.insert-link", function (e, hash, link) {
+            editor.insertHtml(link, 'unfiltered_html'); 
+        })
+        .on("file.upload-done", function (e, hash, id) {
+            $("<input type='text' value='"+id+"' name='attachments'>").appendTo($FilesDiv);
+        })
+        .on("file.remove", function (e, hash, id) {
+            $("input[value='"+id+"']", $FilesDiv).remove();
+        });
+
+    $form.on('submit', function (e) {
+        e.preventDefault();
+
+        var numbers = $("input[type='number']", $form);
+
+        for (var i = 0; i < numbers.length; ++i) {
+            var $element = $(numbers[i]), val = parseFloat($element.val());
+            if (isNaN(val) || val > 100 || val < -100) {
+                $element.addClass('error').focus();
+                return false;
+            }
+        }
+
+        var data = $form.serializeObject();
+        if (data.attachments&&!$.isArray(data.attachments)) data.attachments = [data.attachments];
+        $.extend(data,{
+            body_text: editor.getData(),
+            author: userid
+        });
+
+        callAPI(data).ok(function (data){
+            $.jump(data.url);
+        }).paramError(function(data){
+            for (var name in data) {
+                $("[name='"+name+"']", $form).popover('show');
+            }
+        });
+    });
+});
+</script>
+{%endwith%}

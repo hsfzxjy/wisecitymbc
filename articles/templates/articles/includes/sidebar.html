@@ -1,0 +1,68 @@
+{% with template_id=container_id|add:"status-template" %}
+<div class="list-group-header">{{title}}</div>
+<ul class="list-group" id="{{container_id}}"></ul>
+<script type="text/template" id="{{template_id}}">
+    <li class="list-group-item display-none load-list-item">
+        <a href="{url}" class="display-block"> 
+            {title} 
+            <span class="badge transparent-bk pull-right"> 
+                浏览({view_times}) 
+            </span>
+        </a>
+    </li>
+</script>
+<script type="text/javascript">
+require(['jquery', 'main'], function ($) {
+    $(function () {
+        var apiParams = {
+            category: "{{category}}",
+            limit: 10
+        };
+
+        {% if type %}
+        apiParams.type = "{{type}}";
+        {% endif %}
+
+        LIST.createList({
+            api: API.url('statuses').param(apiParams),
+            $container: $('#{{container_id}}'),
+            templateId: '{{template_id}}',
+            maxCount: 10,
+            scroll: false,
+            firstTrigger: true,
+            listType: 'waterfall',
+            autoLoad: true
+        });
+    });
+});
+</script>
+
+{% with file_template_id=file_container_id|add:"file-template" %}
+    {% if show_file %}
+        <div class="list-group-header">{{file_title}}</div>
+        <ul class="list-group" id="{{file_container_id}}"></ul>
+        <script type="text/template" id="{{file_template_id}}">
+            <li class="list-group-item display-none load-list-item">
+                <a href="{file.url}" target="_blank" class="display-block"> 
+                    {file.file_name} 
+                </a>
+            </li>
+        </script>
+        <script type="text/javascript">
+            require(['jquery', 'main'], function ($) {
+                $(function () {
+                    LIST.createList({
+                        $container: '#{{file_container_id}}',
+                        templateId: '{{file_template_id}}',
+                        listType: 'waterfall',
+                        api: API.url('files').param('limit', 5),
+                        maxCount: 5,
+                        firstTrigger: true
+                    });
+                });
+            });
+        </script>
+    {% endif %}
+{% endwith %}
+
+{% endwith %}

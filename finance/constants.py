@@ -1,0 +1,1 @@
+finance_categories = ('bond', 'goods', 'future', 'stock')

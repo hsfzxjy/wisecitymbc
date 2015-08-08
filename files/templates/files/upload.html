@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}上传{% endblock %}
+
+{% block prevent_form %} {% endblock %}
+
+{% block main_content %}
+    <div class="panel post clearfix" style="margin-bottom:0;">
+        <button class="btn btn-success pull-left" id="upload-button">选择文件...</button>
+        <form id="files-input" class="form" method="post" action="">
+            {% csrf_token%}
+            <input type="submit" class="pull-right btn btn-primary" value="确定">
+        </form>
+        {% include "includes/upload.html" with upload_cdn=True upload_button_id="upload-button" upload_container_selector="#files-container" %}
+    </div>
+    <div id="files-container" class="panel post clearfix">
+        
+    </div>
+{% endblock %}
+
+{% block extra_header %}
+<style type="text/css">
+    .file-insert {
+        display: none;
+    }
+</style>
+<script type="text/javascript">
+require(['jquery', 'main', 'uploadUtils'], function () {
+    $(function () {
+        var $filesInputForm = $("#files-input");
+        FileUpload.events
+            .on("file.upload-done", function (e, _, id) {
+                $("<input type='hidden' name='files' value='{id}'>".render({
+                    id: id
+                })).appendTo($filesInputForm);
+            })
+            .on("file.remove", function (e, _, id) {
+                $("input[value='{id}']".render({id: id}), $filesInputForm).remove();
+            });
+    });
+});
+</script>
+{% endblock %}

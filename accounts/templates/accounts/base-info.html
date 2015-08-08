@@ -1,0 +1,35 @@
+﻿{% extends "base.html" %}
+{% block prevent_form %}{% endblock %}
+
+{% block container %}
+<div class="col-xs-12">
+    <div id="userHeader" class="jumbotron">
+        <div class="row">
+            <div class="col-sm-12 col-md-9">
+                <h2>
+                    {{user_object.nickname}}
+                    <br>
+                    <small>
+                        {{user_object.description}}
+                    </small>
+                </h2>
+            </div>
+            <div class="col-sm-12 col-md-3 text-center">
+                <!--<a target="_blank" href="/chat/?chatwith=user{{user_object.id}}" class="btn btn-lg btn-primary">
+                    和 TA 聊天
+                </a>-->
+            </div>
+        </div>
+    </div>
+    <ul id="userInfoNav" class="nav nav-tabs" role="tablist">
+        {% block tab_list %}
+            {% for tab_item in tab_lists %}
+                <li role="presentation" class="{% if active == tab_item.name %}active{% endif %}">
+                    <a href="{{tab_item.url}}">{{tab_item.title}}</a>
+                </li>
+            {% endfor %}
+        {% endblock %}
+    </ul>
+</div>
+{% block info_content %} {% endblock %}
+{% endblock %}

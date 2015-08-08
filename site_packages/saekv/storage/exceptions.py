@@ -1,0 +1,2 @@
+class AwaitTimeout(Exception):
+    pass

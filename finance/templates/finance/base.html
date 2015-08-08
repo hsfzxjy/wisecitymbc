@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block inner_container %}
+    <div class="col-xs-12 col-md-9">
+        {% block main_content %}{% endblock %}
+    </div>
+    <div class="mobile-hidden col-md-3">
+        {% block sidebar %} 
+            {% include "articles/includes/sidebar.html" with title="政府公告" category="admin" container_id="admin-container" %}
+            {% include "articles/includes/sidebar.html" with title="选手公告" category="player" container_id="player-container" %}
+        {% endblock %}
+    </div>
+{% endblock %}

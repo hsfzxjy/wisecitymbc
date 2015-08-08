@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}公告{% endblock %}
+
+{%block extra_header%}
+<script type="text/javascript">
+require(['jquery', 'main'], function ($) {
+    $(function(){
+        var api = API.url('statuses').param({
+            limit: 20,
+            category: "{{category}}"
+        }), type="{{type}}";
+
+        type && api.param({
+            status_type: type
+        });
+
+        var list = LIST.createList({
+            api: api,
+            $container: $('#statusContainer'),
+            templateId: 'statusTemplate',
+            firstTrigger: true,
+            listType: 'waterfall',
+            autoLoad: true
+        });
+    });
+});
+</script>
+{%endblock%}
+{% block templates %}
+<template type="template" id="statusTemplate">
+    <article class="panel post gray-background display-none load-list-item">
+        <header class="panel-heading post-header">
+            <h2 class="post-title">
+                <a href="{url}">
+                    {title}
+                </a>
+            </h2>
+        </header>
+        <section class="panel-body post-content">
+            <p>
+                {summary}
+            </p>
+        </section>
+        <section class="panel-footer post-meta clearfix">
+            <span class="pull-left">
+                @{author.a_tag}
+            </span>
+            <div class="pull-right">
+                <a href="{url}">
+                    浏览({view_times})
+                </a>
+                <a href="{url}#comment">
+                    评论({comment_count})
+                </a>
+                <span>
+                    {created_time}
+                </span>
+            </div>
+        </section>
+    </article>
+</template>
+{% endblock %}
+
+{% block main_content %}
+<div class="col-sm-12">
+<nav class="navbar navbar-inverse navbar-fixed">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <p class="pull-left visible-xs navbar-text">点击展开分类&rarr;</p>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                {% for item in navbar_items %}
+                    <li class="{% ifequal item.type type %}active{% endifequal %}">
+                        <a href="{{item.url}}">
+                            {{item.name}}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>
+</div>
+<div class="col-sm-12" id="statusContainer">
+</div>
+{% endblock %}

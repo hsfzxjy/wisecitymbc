@@ -1,0 +1,46 @@
+{% extends "finance/base.html" %}
+
+{% block title %} {{ model.meta.verbose_name }} {% endblock %}
+
+{% block main_content %}
+<div class="col-xs-12" id="finance-list">
+</div>
+{% endblock %}
+
+{% block templates %}
+<template id="finance-item">
+    <div class="post gray-background display-none load-list-item">
+        <a href="{url}">
+            <h2>{name}</h2>
+        </a>
+        <div class="row">
+        {% for data in model.get_display_fields %}
+            <div class="col-xs-12 col-md-{{data.col_width}} data-section {{data.extra_css}}">
+                <h1>{{data.name}}</h1>
+                <span class="{% if data.status_css %}price-{last_log.status}{% endif %}">
+                    { {{data.field_name}} } {% if data.with_percentage %} % {% endif %}
+                </span>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</template>
+{% endblock %}
+
+{% block extra_header %}
+<script type="text/javascript">
+require(['jquery', 'main'], function () {
+    $(function () {
+        LIST.createList({
+            listType: "waterfall",
+            firstTrigger: true,
+            autoLoad: true,
+            $container: $("#finance-list"),
+            api: API.url("{{category}}"),
+            templateId: "finance-item",
+            reverse:false
+        });
+    });
+});
+</script>
+{% endblock %}

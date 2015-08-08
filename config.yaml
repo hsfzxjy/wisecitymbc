@@ -1,0 +1,9 @@
+name: wisecitymbc
+version: 1
+worker: gevent
+
+libraries:
+- name: "django"
+  version: "1.5"
+- name: "tornado"
+  version: "3.1.1"

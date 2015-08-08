@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{%block title%}
+首页
+{%endblock%}
+
+{% block extra_header %}
+<style type="text/css">
+    .padding {
+        padding-top: 20px;
+    }
+</style>
+<script type="text/javascript">
+require(['jquery', 'chart'], function ($, ChartDataLoader) {
+    $(function () {
+        new ChartDataLoader({
+            category: "goods",
+            id: "1",
+            $container: "#gold-chart-container",
+            title: "黄金",
+            navigator: false
+        });
+
+        new ChartDataLoader({
+            api: API.url('finance-data').url('logs').url('index').param({
+                limit: 20
+            }),
+            $container: "#index-chart-container",
+            title: "城市指数",
+            navigator: false
+        });
+        new ChartDataLoader({
+            category: "goods",
+            id: "3",
+            $container: "#metal-chart-container",
+            title: "贵金属",
+            navigator: false
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block inner_container %}
+<div id="main-content" class="padding col-xs-12 col-md-push-3 col-md-6">
+    <div class="col-xs-12 highcharts" id="index-chart-container"></div>
+    <div class="col-xs-12 highcharts" id="gold-chart-container"></div>
+    <div class="col-xs-12 highcharts" id="metal-chart-container"></div>
+</div>
+<div id="left-sidebar" class="padding col-xs-12 col-sm-6 col-md-3 col-md-pull-6">
+    {% include "articles/includes/sidebar.html" with title="政府公告" category="admin" container_id="admin-container" show_file="true" file_container_id="file-container" file_title="重要文件" %}
+</div>
+<div id="right-sidebar" class="padding col-xs-12 col-sm-6 col-md-3">
+    {% include "articles/includes/sidebar.html" with title="选手公告" category="player" container_id="player-container" %}
+</div>
+{% endblock %}

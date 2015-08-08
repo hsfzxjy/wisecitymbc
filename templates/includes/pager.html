@@ -1,0 +1,12 @@
+<ul class="pager" id="id">
+    <li class="previous {%if not pager.previous and not pager.has_preivous %}hidden{% endif %}">
+        <a href="{{pager.previous|default:'javascript:void(0);'}}">
+            &larr; 上一页
+        </a>
+    </li>
+    <li class="next {%if not pager.next and not pager.has_next %}hidden{% endif %}">
+        <a href="{{pager.next|default:'javascript:void(0);'}}">
+            下一页 &rarr;
+        </a>
+    </li>
+</ul>

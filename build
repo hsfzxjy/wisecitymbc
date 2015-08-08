@@ -1,0 +1,3 @@
+cd static/js
+cat utils.js api.js load-list.js multiselect-table.js >main.js && uglifyjs main.js -o build/main.js
+uglifyjs toastr.js > build/toastr.js

@@ -1,0 +1,9 @@
+{% load i18n bootstrap3 %}
+<div class="actions" style="display:inline-block;">
+    <div class="form-group pull-right" style="margin: 5px 0 0 5px;">
+    <button type="submit" class="btn btn-default form-control" title="{% trans 'Run the selected action' %}" name="index" value="{{ action_index|default:0 }}">{% trans "Go" %}</button>
+    </div>
+    <div class="pull-right">
+        {% bootstrap_form action_form layout="inline"%}
+    </div>
+</div>

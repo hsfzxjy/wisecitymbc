@@ -1,0 +1,5 @@
+mysql -uroot -p12345 -e "drop database app_wisecitymbc;"
+mysql -uroot -p12345 -e " create database app_wisecitymbc;"
+python manage.py makemigrations
+python manage.py syncdb
+python manage.py loaddata data

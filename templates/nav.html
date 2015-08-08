@@ -1,0 +1,120 @@
+{% load notice_utils static %}
+<div id="top-nav" class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navBarCollapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <p class="red-point">{%notices_count%}</p>
+                <p class="red-point red-point-left badge-chat"></p>
+            </button>
+            <a href="/" class="navbar-brand">
+                <img src="{% static 'img/logo.png' %}" alt="WiseCityMBC" />
+            </a>
+        </div>
+        <div id="navBarCollapse" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/articles/admin/">政府</a></li>
+                <li><a href="/articles/player/">选手</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        财经
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for model_name, model in finance_models.iteritems %}
+                            <li>
+                                <a href="/finance/{{model_name}}/">{{model.meta.verbose_name}}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="/files/">文件</a></li>
+                <li><a href="/map/">地图</a></li>
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        操作
+                        <span class="caret"></span>
+                    </a> 
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/articles/add/">写文章</a>
+                        </li>
+                        {% if perms.files.manage_file %}
+                        <li>
+                            <a href="/files/upload/">传文件</a>
+                        </li>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/admin/">后台管理</a>
+                        </li>
+                        <li>
+                            <a href="{{user.admin_url}}">控制台</a>
+                        </li>
+                        {% endif %}
+                    </ul>   
+                </li>
+                {% endif %}
+            </ul>
+            {%if not user.is_authenticated%}
+            <ul class="nav navbar-nav navbar-right" id="loginNav">
+                <li>
+                    <a href="/accounts/login/">登录</a>
+                </li>
+            </ul>
+            {%else%}
+            <ul class="nav navbar-nav navbar-right" id="userInfo">
+                <li>
+                    <a href="/notices/">
+                        <i class="fa fa-1x fa-envelope-o"></i>
+                        &nbsp;
+                        <span class="badge badge-notice">{% notices_count %}</span>
+                    </a>
+                </li>
+                <li>
+                    <a id="userName" href="/accounts/info/me/">{{user.nickname}}</a>
+                </li>
+                <li>
+                    <a href="/accounts/logout/" id="btnLogout">退出</a>
+                </li>
+            </ul>
+            {%endif%}
+        </div>
+    </div>
+    <div class="container" id="top-scroll">&nbsp;</div>
+</div>
+
+{% block finance_data %}
+<script type="text/javascript">
+require(['jquery', 'main'], function () {
+    $(function () {
+        var $scrollBox = $("#top-scroll");
+
+        function processData (data) {
+            var arr = [];
+
+            $(data).each(function () {
+                arr.push('<span class="key">{display_name}</span><span class="value">{value}</span>'.render(this));
+            });
+
+            return arr.join('');
+        }
+
+        function loadFinanceData () {
+            API.url('finance-data').get().ok(function (data) {
+                $scrollBox.html(processData(data));
+            });
+
+            setTimeout(loadFinanceData, 60000);
+        }
+
+        loadFinanceData();
+    });
+});
+</script>
+{% endblock %}

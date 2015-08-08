@@ -1,0 +1,37 @@
+{%extends "base.html"%}
+{%block title%}登录{%endblock%}
+{% block sidebar %}{% endblock %}
+{% block container %}
+<div class="container">
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6" style="padding-top:50px;">
+    {% include "includes/messages.html" %}
+        <form class="form" role="form" id="formLogin">
+            <div class="form-group">
+                <input name="username" class="form-control" placeholder="用户名" required autofocus>
+            </div>
+            <div id="passwordGroup" class="form-group">
+                <input type="password" class="form-control" id="password" name="password" placeholder="密码" required>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="登录">
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+require(['main'], function () {
+    $(function() {
+        $("#formLogin").on('submit', function () {
+            API.raw('/accounts/login/').post($("#formLogin").serializeObject()).ok(function(data) {
+                if (data.status === 'OK') {
+                    $.jump("{{redirect_to}}");
+                } else {
+                    $("#passwordGroup").addClass("has-error");
+                    $("#password").val("").focus();
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

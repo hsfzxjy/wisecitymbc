@@ -1,0 +1,38 @@
+{% extends "finance/base.html" %}
+
+{% block title %} {{ finance_object.name }} {% endblock %}
+
+{% block main_content %}
+<div class="col-xs-12 text-center">
+    <h1>{{finance_object.name}}</h1>
+    <div class="row">
+    {% for data in finance_object.display_data %}
+        <div class="col-xs-12 col-md-{{data.col_width}} data-section {{data.extra_css}}">
+            <h1>{{data.name}}</h1>
+            <span class="{% if data.status_css %}price-{{finance_object.last_log.status}}{% endif %}">
+                {{data.value}} {% if data.with_percentage %} % {% endif %}
+            </span>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<div class="col-xs-12 highcharts" id="chart-container">
+</div>
+{% endblock %}
+
+{% block extra_header %}
+{% if need_log %}
+<script type="text/javascript">
+require(['chart'], function (ChartDataLoader) {
+    $(function () {
+        new ChartDataLoader({
+            category: "{{category}}",
+            id: "{{finance_object.id}}",
+            $container: "#chart-container",
+            title: "走势图"
+        });
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

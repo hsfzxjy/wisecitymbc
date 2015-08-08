@@ -1,0 +1,50 @@
+<div class="form-group">
+    <div class="col-xs-12">
+        <table class="table" id="user-data-table">
+            <thead>
+                <tr>
+                    <td>选手</td>
+                    <td>股票增幅 (%)</td>
+                    <td>产值增幅 (%)</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<template id="user-data-add-template">
+    <tr>
+        <td>
+            {nickname}
+        </td>
+        <td>
+            <input type="number" name="data__stock__{id}" class="form-control" value="0">
+        </td>
+        <td>
+            <input type="number" name="data__output_value__{id}" class="form-control" value="0">
+        </td>
+    </tr>
+</template>
+<template id="user-data-add-empty">
+    <tr class="empty">
+        <td>暂时没有选手信息</td>
+        <td></td><td></td>
+    </tr>
+</template>
+<script type="text/javascript">
+require(['jquery', 'main'], function ($) {
+    $(function () {
+        LIST.createList({
+            api: API.url('users').param({
+                category: "player"
+            }),
+            $container: $("#user-data-table>tbody"),
+            templateId: "user-data-add-template",
+            emptyTemplateId: "user-data-add-empty",
+            listType: "waterfall",
+            firstTrigger: true
+        });
+    });
+});
+</script>

@@ -1,0 +1,41 @@
+[
+    {
+        "model": "finance.ExtraData",
+        "pk": 1,
+        "fields": {
+            "key": "index",
+            "display_name": "城市指数",
+            "value": "1000",
+            "removeable": false
+        }
+    },
+    {
+        "model": "finance.ExtraData",
+        "pk": 2,
+        "fields": {
+            "key": "year",
+            "display_name": "财年",
+            "value": "2015",
+            "removeable": false
+        }
+    },
+    {
+        "model": "finance.Goods",
+        "pk": 1,
+        "fields": {
+            "name": "黄金",
+            "price": "0"
+        }
+    },
+    {
+        "model": "finance.ExtraData",
+        "pk": 3,
+        "fields": {
+            "key": "stock_volume",
+            "display_name": "股票成交量",
+            "value": "0",
+            "display_on_home_page": false,
+            "removeable": false
+        }
+    }
+]

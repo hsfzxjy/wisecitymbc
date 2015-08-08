@@ -1,0 +1,2 @@
+rm -rf `find . -name "*.pyc"`
+dev_server.py --mysql=root:12345@127.0.0.1:3306 --storage-path=/home/hsfzxjy/storage/

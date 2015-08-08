@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}写文章{% endblock %}
+
+{% block main_content %}
+    <div class="post clearfix">
+    {%include "articles/write.html" with submit_button=True editor_cdn=True write_form_id="write-form" %}
+    </div>
+{% endblock %}
